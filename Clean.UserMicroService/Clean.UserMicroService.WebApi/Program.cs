@@ -7,11 +7,23 @@ using Clean.UserMicroService.Application.Services.Query.GetUsers;
 using Clean.UserMicroService.Application.Services.Query.GetUser;
 using Clean.UserMicroService.Application.Services.Command.AddUser;
 using Clean.UserMicroService.Application.Services.Command.UpdateUser;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMassTransit(busConfigurator =>
+{
+    var entryAssembly = Assembly.GetExecutingAssembly();
 
+    busConfigurator.AddConsumers(entryAssembly);
+    busConfigurator.UsingRabbitMq((context, busFactoryConfigurator) =>
+    {
+        busFactoryConfigurator.Host("rabbitmq", "/", h => { });
+
+        busFactoryConfigurator.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddScoped<IGetUsersService, GetUsersService>();
 builder.Services.AddScoped<IGetUserService, GetUserService>();

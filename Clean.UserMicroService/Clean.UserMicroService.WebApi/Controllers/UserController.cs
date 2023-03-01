@@ -2,9 +2,12 @@ using Clean.UserMicroService.Application.Services.Command.AddUser;
 using Clean.UserMicroService.Application.Services.Command.UpdateUser;
 using Clean.UserMicroService.Application.Services.Query.GetUser;
 using Clean.UserMicroService.Application.Services.Query.GetUsers;
+using Clean.UserMicroService.Domain.Entities;
+using MassTransit;
+using MassTransit.Transports;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace Clean.UserMicroService.WebApi.Controllers
 {
@@ -13,9 +16,11 @@ namespace Clean.UserMicroService.WebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public UserController(IMediator mediator)
+        private readonly IPublishEndpoint _publishEndpoint;
+        public UserController(IMediator mediator, IPublishEndpoint publishEndpoint)
         {
             _mediator = mediator;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet("GetUsers")]
@@ -66,6 +71,7 @@ namespace Clean.UserMicroService.WebApi.Controllers
                     return BadRequest(model);
                 }
                 var user = await _mediator.Send(model, cancellationToken);
+                await _publishEndpoint.Publish<UserEntity>(user);
                 return Ok(user);
             }
             catch (Exception ex)

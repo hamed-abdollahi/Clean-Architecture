@@ -21,7 +21,13 @@ namespace Clean.UserMicroService.Application.Services.Query.GetUser
         {
             _context.Users.Add(user);
             _context.SaveChanges();
-            return Task.FromResult(new AddUserResultDto() { Id = user.Id });
+            return Task.FromResult(new AddUserResultDto() {
+                Id = user.Id ,
+                Name= user.Name,
+                Email= user.Email ,
+                Family= user.Family ,
+                Password = user.Password
+            });
         }
 
     }
