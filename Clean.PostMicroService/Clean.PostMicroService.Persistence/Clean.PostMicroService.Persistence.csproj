@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Clean.UserMicroService.Application\Clean.UserMicroService.Application.csproj" />
-    <ProjectReference Include="..\Clean.UserMicroService.Domain\Clean.UserMicroService.Domain.csproj" />
+    <ProjectReference Include="..\Clean.PostMicroService.Application\Clean.PostMicroService.Application.csproj" />
+    <ProjectReference Include="..\Clean.PostMicroService.Domain\Clean.PostMicroService.Domain.csproj" />
   </ItemGroup>
 
 	

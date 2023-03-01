@@ -1,5 +1,5 @@
-﻿using Clean.UserMicroService.Application.Interfaces;
-using Clean.UserMicroService.Domain.Entities;
+﻿using Clean.PostMicroService.Domain.Entities;
+using Clean.PostMicroService.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Clean.Persistence
@@ -12,7 +12,9 @@ namespace Clean.Persistence
         }
 
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<PostEntity> Posts { get; set; }
+
     }
 
-    
+
 }

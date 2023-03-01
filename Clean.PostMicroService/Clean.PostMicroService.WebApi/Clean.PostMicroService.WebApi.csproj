@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Clean.UserMicroService.Application\Clean.UserMicroService.Application.csproj" />
-    <ProjectReference Include="..\Clean.UserMicroService.Persistence\Clean.UserMicroService.Persistence.csproj" />
+    <ProjectReference Include="..\Clean.PostMicroService.Application\Clean.PostMicroService.Application.csproj" />
+    <ProjectReference Include="..\Clean.PostMicroService.Persistence\Clean.PostMicroService.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
