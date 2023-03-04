@@ -16,11 +16,11 @@ namespace Clean.UserMicroService.WebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IPublishEndpoint _publishEndpoint;
-        public UserController(IMediator mediator, IPublishEndpoint publishEndpoint)
+        private readonly IBus _bus;
+        public UserController(IMediator mediator, IBus bus)
         {
             _mediator = mediator;
-            _publishEndpoint = publishEndpoint;
+            _bus = bus;
         }
 
         [HttpGet("GetUsers")]
@@ -71,7 +71,9 @@ namespace Clean.UserMicroService.WebApi.Controllers
                     return BadRequest(model);
                 }
                 var user = await _mediator.Send(model, cancellationToken);
-                await _publishEndpoint.Publish<UserEntity>(user);
+                var uri = new Uri("rabbitmq://localhost/user");
+                var endpoint = await _bus.GetSendEndpoint(uri);
+                endpoint.Send(user);
                 return Ok(user);
             }
             catch (Exception ex)

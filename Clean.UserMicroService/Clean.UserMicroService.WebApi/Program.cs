@@ -8,22 +8,19 @@ using Clean.UserMicroService.Application.Services.Query.GetUser;
 using Clean.UserMicroService.Application.Services.Command.AddUser;
 using Clean.UserMicroService.Application.Services.Command.UpdateUser;
 using MassTransit;
+using Clean.UserMicroService.WebApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddMassTransit(busConfigurator =>
-{
-    var entryAssembly = Assembly.GetExecutingAssembly();
-
-    busConfigurator.AddConsumers(entryAssembly);
-    busConfigurator.UsingRabbitMq((context, busFactoryConfigurator) =>
-    {
-        busFactoryConfigurator.Host("rabbitmq", "/", h => { });
-
-        busFactoryConfigurator.ConfigureEndpoints(context);
-    });
-});
+var rabbitMqSettings = builder.Configuration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
+builder.Services.AddMassTransit(mt => mt.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(
+      config => config.Host(new Uri(rabbitMqSettings.Uri),h =>
+      {
+          h.Username(rabbitMqSettings.UserName) ;
+          h.Password(rabbitMqSettings.Password);
+      })
+    ))
+);
 
 builder.Services.AddScoped<IGetUsersService, GetUsersService>();
 builder.Services.AddScoped<IGetUserService, GetUserService>();

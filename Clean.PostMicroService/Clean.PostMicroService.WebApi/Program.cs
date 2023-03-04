@@ -7,11 +7,28 @@ using Clean.PostMicroService.Application.Services.Query.GetPosts;
 using Clean.PostMicroService.Application.Services.Query.GetPost;
 using Clean.PostMicroService.Application.Services.Command.AddPost;
 using Clean.PostMicroService.Application.Services.Command.UpdatePost;
+using Clean.PostMicroService.WebApi.Models;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+var rabbitMqSettings = builder.Configuration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
+builder.Services.AddMassTransit(x => x.UsingRabbitMq((context, config) =>
+{
+    config.Host(new Uri(rabbitMqSettings.Uri), h =>
+    {
+        h.Username(rabbitMqSettings.UserName);
+        h.Password(rabbitMqSettings.Password);
+    });
+    config.ReceiveEndpoint("user", e =>
+    {
+        e.Consumer<ConsumerClass>(context);
+    });
+    x.AddConsumer<ConsumerClass>();
+})
+);
 
 builder.Services.AddScoped<IGetPostsService, GetPostsService>();
 builder.Services.AddScoped<IGetPostService, GetPostService>();
