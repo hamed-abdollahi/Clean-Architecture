@@ -27,8 +27,7 @@ builder.Services.AddMassTransit(x => x.UsingRabbitMq((context, config) =>
         e.Consumer<ConsumerClass>(context);
     });
     x.AddConsumer<ConsumerClass>();
-})
-);
+}));
 
 builder.Services.AddScoped<IGetPostsService, GetPostsService>();
 builder.Services.AddScoped<IGetPostService, GetPostService>();
