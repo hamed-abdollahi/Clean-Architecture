@@ -1,4 +1,5 @@
 ﻿using Clean.PostMicroService.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Clean.PostMicroService.Application.Services.Query.GetUser
 {
@@ -14,7 +15,7 @@ namespace Clean.PostMicroService.Application.Services.Query.GetUser
 
         public Task<GetUserDto> GetUser(int userId, CancellationToken cancellationToken = default)
         {
-            var user = _context.Users.FirstOrDefault(x=>x.UserId == userId);
+            var user = _context.Users.AsNoTracking().FirstOrDefault(x=>x.UserId == userId);
             if (user == null)
                 return Task.FromResult<GetUserDto>(null);
             return Task.FromResult(new GetUserDto()

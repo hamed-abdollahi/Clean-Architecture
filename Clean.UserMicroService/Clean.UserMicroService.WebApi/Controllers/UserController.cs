@@ -96,6 +96,13 @@ namespace Clean.UserMicroService.WebApi.Controllers
                     return BadRequest(model);
                 }
                 var user = await _mediator.Send(model, cancellationToken);
+                var _user = new UpdateUserConsumer()
+                {
+                    UserId = user.Id,
+                    Name = user.Name,
+                    Family = user.Family
+                };
+                Produce(new MainConsumerDTO() { Operation = Operation.Edit, Data = _user }, "update-user");
                 return Ok(user);
             }
             catch (Exception ex)

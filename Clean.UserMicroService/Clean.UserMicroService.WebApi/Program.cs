@@ -19,7 +19,6 @@ builder.Services.AddMassTransit(mt => mt.AddBus(provider => Bus.Factory.CreateUs
           h.Username(rabbitMqSettings.UserName);
           h.Password(rabbitMqSettings.Password);
       })
-
     ))
 );
 

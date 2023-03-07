@@ -42,9 +42,9 @@ public class ConsumerEndpoint : IConsumer<MainConsumerDTO>
                     var userUpdateModel = new UserEntity()
                     {
                         Id = getUser.Id,
-                        UserId = getUser.UserId,
-                        Name = getUser.Name,
-                        Family = getUser.Family,
+                        UserId = updateConsumer.UserId,
+                        Name = updateConsumer.Name,
+                        Family = updateConsumer.Family,
                     };
                     await _updateUserService.UpdateUser(userUpdateModel);
                     break;

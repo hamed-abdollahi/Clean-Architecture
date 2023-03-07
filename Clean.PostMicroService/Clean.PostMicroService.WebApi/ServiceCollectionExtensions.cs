@@ -70,6 +70,11 @@ namespace Clean.PostMicroService.WebApi
                         e.Consumer<ConsumerEndpoint>(context);
                         e.DiscardSkippedMessages();
                     });
+                    config.ReceiveEndpoint("update-user", e =>
+                    {
+                        e.Consumer<ConsumerEndpoint>(context);
+                        e.DiscardSkippedMessages();
+                    });
                 });
             });
 
