@@ -1,6 +1,6 @@
-﻿using Clean.UserMicroService.Application.Interfaces;
+﻿using Clean.PostMicroService.Application.Interfaces;
 
-namespace Clean.UserMicroService.Application.Services.Query.GetUser
+namespace Clean.PostMicroService.Application.Services.Query.GetUser
 {
     public class GetUserService : IGetUserService
     {
@@ -12,16 +12,17 @@ namespace Clean.UserMicroService.Application.Services.Query.GetUser
         }
 
 
-        public Task<GetUserDto> GetUser(int id, CancellationToken cancellationToken = default)
+        public Task<GetUserDto> GetUser(int userId, CancellationToken cancellationToken = default)
         {
-            var user = _context.Users.Find(id);
+            var user = _context.Users.FirstOrDefault(x=>x.UserId == userId);
             if (user == null)
                 return Task.FromResult<GetUserDto>(null);
             return Task.FromResult(new GetUserDto()
             {
-                FullName = user.Name + " " + user.Family,
-                Id = user.UserId,
-                Email = user.Email
+                Id = user.Id,
+                UserId = userId,
+                Name = user.Name,
+                Family = user.Family
             });
         }
 

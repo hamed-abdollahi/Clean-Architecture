@@ -1,63 +1,26 @@
-using Clean.PostMicroService.Application.Services.Command.AddPost;
-using Clean.PostMicroService.Application.Services.Command.UpdatePost;
-using Clean.PostMicroService.Application.Services.Query.GetPost;
-using Clean.PostMicroService.Application.Services.Query.GetPosts;
+using Clean.Shared.Main;
+using Clean.Shared.DTO;
+using Clean.Shared.Consumers;
+using Clean.PostMicroService.Application.Services.Command.AddUser;
+using Clean.PostMicroService.Application.Services.Command.UpdateUser;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace Clean.UserMicroService.WebApi.Controllers
+namespace Clean.PostMicroService.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PostController : ControllerBase
+    public class UserController : ControllerBase 
     {
         private readonly IMediator _mediator;
-        public PostController(IMediator mediator)
+        public UserController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet("GetPosts")]
-        public async Task<IActionResult> GetPosts([FromQuery] GetPostsQuery model, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var post = await _mediator.Send(model, cancellationToken);
-                if (post is null)
-                {
-                    return NotFound();
-                }
-                return Ok(post);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-            
-        }
-
-        [HttpGet("GetPost")]
-        public async Task<IActionResult> GetPost([FromQuery] GetPostQuery model, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var user = await _mediator.Send(model, cancellationToken);
-                if (user is null)
-                {
-                    return NotFound();
-                }
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-
-        }
-
-        [HttpPost("AddPost")]
-        public async Task<IActionResult> AddPost([FromQuery] AddPostCommand model, CancellationToken cancellationToken)
+        [HttpPost("AddUser")]
+        public async Task<IActionResult> AddUser([FromQuery] AddUserCommand model, CancellationToken cancellationToken)
         {
             try
             {
@@ -65,7 +28,8 @@ namespace Clean.UserMicroService.WebApi.Controllers
                 {
                     return BadRequest(model);
                 }
-                var user = await _mediator.Send(model, cancellationToken);
+                var user = await _mediator.Send(model);
+
                 return Ok(user);
             }
             catch (Exception ex)
@@ -74,8 +38,8 @@ namespace Clean.UserMicroService.WebApi.Controllers
             }
 
         }
-        [HttpPut("UpdatePost")]
-        public async Task<IActionResult> UpdatePost([FromQuery] UpdatePostCommand model, CancellationToken cancellationToken)
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser([FromQuery] UpdateUserCommand model, CancellationToken cancellationToken)
         {
             try
             {

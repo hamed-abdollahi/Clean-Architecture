@@ -14,13 +14,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 var rabbitMqSettings = builder.Configuration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
 builder.Services.AddMassTransit(mt => mt.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(
-      config => config.Host(new Uri(rabbitMqSettings.Uri),h =>
+      config => config.Host(new Uri(rabbitMqSettings.Uri), h =>
       {
-          h.Username(rabbitMqSettings.UserName) ;
+          h.Username(rabbitMqSettings.UserName);
           h.Password(rabbitMqSettings.Password);
       })
+
     ))
 );
+
+builder.Services.AddMassTransitHostedService();
 
 builder.Services.AddScoped<IGetUsersService, GetUsersService>();
 builder.Services.AddScoped<IGetUserService, GetUserService>();

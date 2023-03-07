@@ -1,11 +1,64 @@
-﻿using Clean.PostMicroService.Domain.Entities;
+﻿using Clean.PostMicroService.Application.Services.Command.AddUser;
+using Clean.PostMicroService.Application.Services.Command.UpdateUser;
+using Clean.PostMicroService.Application.Services.Query.GetUser;
+using Clean.PostMicroService.Domain.Entities;
+using Clean.Shared.Consumers;
+using Clean.Shared.DTO;
 using MassTransit;
-using System;
+using MassTransit.Mediator;
 
-public class ConsumerClass : IConsumer<UserEntity>
+public class ConsumerEndpoint : IConsumer<MainConsumerDTO>
 {
-    public async Task Consume(ConsumeContext<UserEntity> context)
+    private readonly IAddUserService _addUserService;
+    private readonly IGetUserService _getUserService;
+    private readonly IUpdateUserService _updateUserService;
+    public ConsumerEndpoint(IAddUserService addUserService,
+          IGetUserService getUserService, IUpdateUserService updateUserService)
     {
-        var user = context.Message;
+        _addUserService = addUserService;
+        _getUserService = getUserService;
+        _updateUserService = updateUserService;
+    }
+    public async Task Consume(ConsumeContext<MainConsumerDTO> context)
+    {
+        var message = context.Message;
+        try
+        {
+            switch (message.Operation)
+            {
+                case Operation.Add:
+                    AddUserConsumer addConsumer = (AddUserConsumer)message.Data;
+                    var userAddModel = new UserEntity()
+                    {
+                        UserId = addConsumer.UserId,
+                        Name = addConsumer.Name,
+                        Family = addConsumer.Family,
+                    };
+                    await _addUserService.AddUser(userAddModel);
+                    break;
+                case Operation.Edit:
+                    UpdateUserConsumer updateConsumer = (UpdateUserConsumer)message.Data;
+                    var getUser = await _getUserService.GetUser(updateConsumer.UserId);
+                    var userUpdateModel = new UserEntity()
+                    {
+                        Id = getUser.Id,
+                        UserId = getUser.UserId,
+                        Name = getUser.Name,
+                        Family = getUser.Family,
+                    };
+                    await _updateUserService.UpdateUser(userUpdateModel);
+                    break;
+                case Operation.Delete:
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
     }
 }

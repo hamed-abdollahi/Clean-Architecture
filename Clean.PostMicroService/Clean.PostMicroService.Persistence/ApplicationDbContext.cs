@@ -2,6 +2,7 @@
 using Clean.PostMicroService.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Clean.Persistence
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext

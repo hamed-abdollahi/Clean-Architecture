@@ -1,11 +1,8 @@
-﻿using Clean.UserMicroService.Application.Interfaces;
-using Clean.UserMicroService.Application.Services.Command.AddUser;
-using Clean.UserMicroService.Domain.Entities;
-using Clean.Shared;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿using Clean.PostMicroService.Application.Interfaces;
+using Clean.PostMicroService.Domain.Entities;
+using Clean.PostMicroService.Application.Services.Command.AddUser;
 
-namespace Clean.UserMicroService.Application.Services.Query.GetUser
+namespace Clean.PostMicroService.Application.Services.Query.GetUser
 {
     public class AddUserService : IAddUserService
     {
@@ -24,9 +21,8 @@ namespace Clean.UserMicroService.Application.Services.Query.GetUser
             return Task.FromResult(new AddUserResultDto() {
                 Id = user.UserId ,
                 Name= user.Name,
-                Email= user.Email ,
                 Family= user.Family ,
-                Password = user.Password
+                
             });
         }
 

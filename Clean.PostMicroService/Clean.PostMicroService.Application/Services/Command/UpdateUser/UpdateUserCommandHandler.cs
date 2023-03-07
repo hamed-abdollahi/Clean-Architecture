@@ -1,8 +1,8 @@
-﻿using Clean.UserMicroService.Application.Services.Command.AddUser;
-using Clean.UserMicroService.Domain.Entities;
+﻿using Clean.PostMicroService.Application.Services.Command.AddUser;
+using Clean.PostMicroService.Domain.Entities;
 using MediatR;
 
-namespace Clean.UserMicroService.Application.Services.Command.UpdateUser
+namespace Clean.PostMicroService.Application.Services.Command.UpdateUser
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UpdateUserResultDto>
     {
@@ -20,8 +20,7 @@ namespace Clean.UserMicroService.Application.Services.Command.UpdateUser
                 UserId = request.Id,
                 Name = request.Name,
                 Family = request.Family,
-                Email = request.Email,
-                Password = request.Password
+               
             };
             return _updateUserService.UpdateUser(user, cancellationToken);
         }

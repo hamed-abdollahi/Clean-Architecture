@@ -27,7 +27,7 @@ namespace Clean.UserMicroService.Application.Services.Query.GetUsers
             
             var res = result.Select(p => new GetUsersDto()
             {
-                Id = p.Id,
+                Id = p.UserId,
                 FullName = p.Name + " " + p.Family,
                 Email = p.Email
             }).ToList();

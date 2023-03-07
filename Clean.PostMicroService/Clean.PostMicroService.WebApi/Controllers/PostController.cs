@@ -1,38 +1,34 @@
-using Clean.Shared.Main;
-using Clean.Shared.DTO;
-using Clean.Shared.Consumers;
-using Clean.UserMicroService.Application.Services.Command.AddUser;
-using Clean.UserMicroService.Application.Services.Command.UpdateUser;
-using Clean.UserMicroService.Application.Services.Query.GetUser;
-using Clean.UserMicroService.Application.Services.Query.GetUsers;
-using MassTransit;
+using Clean.PostMicroService.Application.Services.Command.AddPost;
+using Clean.PostMicroService.Application.Services.Command.UpdatePost;
+using Clean.PostMicroService.Application.Services.Query.GetPost;
+using Clean.PostMicroService.Application.Services.Query.GetPosts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Clean.UserMicroService.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class UserController : MainController 
+    [Route("api/[controller]")]
+    public class PostController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public UserController(IMediator mediator, IBus bus):base(bus)
+        public PostController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet("GetUsers")]
-        public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery model, CancellationToken cancellationToken)
+        [HttpGet("GetPosts")]
+        public async Task<IActionResult> GetPosts([FromQuery] GetPostsQuery model, CancellationToken cancellationToken)
         {
             try
             {
-                var user = await _mediator.Send(model, cancellationToken);
-                if (user is null)
+                var post = await _mediator.Send(model, cancellationToken);
+                if (post is null)
                 {
                     return NotFound();
                 }
-                return Ok(user);
+                return Ok(post);
             }
             catch (Exception ex)
             {
@@ -41,8 +37,8 @@ namespace Clean.UserMicroService.WebApi.Controllers
             
         }
 
-        [HttpGet("GetUser")]
-        public async Task<IActionResult> GetUser([FromQuery] GetUserQuery model, CancellationToken cancellationToken)
+        [HttpGet("GetPost")]
+        public async Task<IActionResult> GetPost([FromQuery] GetPostQuery model, CancellationToken cancellationToken)
         {
             try
             {
@@ -60,8 +56,8 @@ namespace Clean.UserMicroService.WebApi.Controllers
 
         }
 
-        [HttpPost("AddUser")]
-        public async Task<IActionResult> AddUser([FromQuery] AddUserCommand model, CancellationToken cancellationToken)
+        [HttpPost("AddPost")]
+        public async Task<IActionResult> AddPost([FromBody] AddPostCommand model, CancellationToken cancellationToken)
         {
             try
             {
@@ -70,14 +66,6 @@ namespace Clean.UserMicroService.WebApi.Controllers
                     return BadRequest(model);
                 }
                 var user = await _mediator.Send(model, cancellationToken);
-
-                var _user = new AddUserConsumer()
-                {
-                    UserId = user.Id,
-                    Name = user.Name,
-                    Family = user.Family
-                };
-                Produce(new MainConsumerDTO() { Operation = Operation.Add , Data = _user },"add-user");
                 return Ok(user);
             }
             catch (Exception ex)
@@ -86,8 +74,8 @@ namespace Clean.UserMicroService.WebApi.Controllers
             }
 
         }
-        [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser([FromQuery] UpdateUserCommand model, CancellationToken cancellationToken)
+        [HttpPut("UpdatePost")]
+        public async Task<IActionResult> UpdatePost([FromBody] UpdatePostCommand model, CancellationToken cancellationToken)
         {
             try
             {
