@@ -19,7 +19,7 @@ namespace Clean.PostMicroService.Application.Services.Query.GetUser
             _context.Users.Add(user);
             _context.SaveChanges();
             return Task.FromResult(new AddUserResultDto() {
-                Id = user.UserId ,
+                UserId = user.UserId ,
                 Name= user.Name,
                 Family= user.Family ,
                 

@@ -17,10 +17,9 @@ namespace Clean.PostMicroService.Application.Services.Command.UpdateUser
         {
             var user = new UserEntity()
             {
-                UserId = request.Id,
+                UserId = request.UserId,
                 Name = request.Name,
                 Family = request.Family,
-               
             };
             return _updateUserService.UpdateUser(user, cancellationToken);
         }

@@ -49,7 +49,7 @@ namespace Clean.PostMicroService.WebApi
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer("Data Source=.;Initial Catalog=Clean_PostService;Integrated Security=true;TrustServerCertificate=True");
+                options.UseSqlServer("Data Source=.\\SQL2017;Initial Catalog=Clean_PostService;Integrated Security=true;TrustServerCertificate=True");
             });
 
 

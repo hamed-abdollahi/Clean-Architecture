@@ -7,9 +7,9 @@ namespace Clean.PostMicroService.Application.Services.Command.AddPost
     {
         private readonly IAddPostService _addPostService;
 
-        public AddPostCommandHandler(IAddPostService addUserService)
+        public AddPostCommandHandler(IAddPostService addPostService)
         {
-            _addPostService = addUserService;
+            _addPostService = addPostService;
         }
 
         public Task<AddPostResultDto> Handle(AddPostCommand request, CancellationToken cancellationToken)

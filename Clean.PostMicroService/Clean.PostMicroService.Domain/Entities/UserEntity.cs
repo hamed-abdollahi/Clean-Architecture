@@ -6,8 +6,7 @@ namespace Clean.PostMicroService.Domain.Entities
     [Table("tblUser")]
     public class UserEntity
     {
-        [Key]
-        public int Id { get; set; }
+        [Key , DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
         public int UserId { get; set; }
         public string? Name { get; set; }
         public string? Family { get; set; }

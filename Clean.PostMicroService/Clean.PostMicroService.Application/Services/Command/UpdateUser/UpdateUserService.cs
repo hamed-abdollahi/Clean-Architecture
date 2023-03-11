@@ -19,7 +19,7 @@ namespace Clean.PostMicroService.Application.Services.Command.AddUser
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
             return Task.FromResult(new UpdateUserResultDto() {
-                Id = user.UserId,
+                UserId = user.UserId,
                 Name = user.Name,
                 Family = user.Family
             });

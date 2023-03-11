@@ -7,7 +7,7 @@ namespace Clean.PostMicroService.Domain.Entities
     [Table("tblPost")]
     public class PostEntity
     {
-        [Key]
+        [Key , DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }

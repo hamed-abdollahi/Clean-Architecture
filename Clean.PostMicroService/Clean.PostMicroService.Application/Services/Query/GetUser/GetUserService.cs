@@ -20,7 +20,6 @@ namespace Clean.PostMicroService.Application.Services.Query.GetUser
                 return Task.FromResult<GetUserDto>(null);
             return Task.FromResult(new GetUserDto()
             {
-                Id = user.Id,
                 UserId = userId,
                 Name = user.Name,
                 Family = user.Family

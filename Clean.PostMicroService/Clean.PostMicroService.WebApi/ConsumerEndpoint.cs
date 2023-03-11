@@ -38,10 +38,8 @@ public class ConsumerEndpoint : IConsumer<MainConsumerDTO>
                     break;
                 case Operation.Edit:
                     UpdateUserConsumer updateConsumer = (UpdateUserConsumer)message.Data;
-                    var getUser = await _getUserService.GetUser(updateConsumer.UserId);
                     var userUpdateModel = new UserEntity()
                     {
-                        Id = getUser.Id,
                         UserId = updateConsumer.UserId,
                         Name = updateConsumer.Name,
                         Family = updateConsumer.Family,
