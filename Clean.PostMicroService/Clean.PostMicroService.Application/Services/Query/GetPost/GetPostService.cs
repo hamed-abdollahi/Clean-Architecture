@@ -10,8 +10,6 @@ namespace Clean.PostMicroService.Application.Services.Query.GetPost
             _context = context;
             _context.Database.EnsureCreated();
         }
-
-
         public Task<GetPostDto> GetPost(int id, CancellationToken cancellationToken = default)
         {
             var post = _context.Posts.Find(id);
@@ -25,6 +23,5 @@ namespace Clean.PostMicroService.Application.Services.Query.GetPost
                 UserId = post.UserId
             });
         }
-
     }
 }

@@ -4,6 +4,7 @@ using Clean.PostMicroService.Application.Services.Command.AddPost;
 using Clean.PostMicroService.Application.Services.Command.AddUser;
 using Clean.PostMicroService.Application.Services.Command.UpdatePost;
 using Clean.PostMicroService.Application.Services.Command.UpdateUser;
+using Clean.PostMicroService.Application.Services.Query.GetCompletePost;
 using Clean.PostMicroService.Application.Services.Query.GetPost;
 using Clean.PostMicroService.Application.Services.Query.GetPosts;
 using Clean.PostMicroService.Application.Services.Query.GetUser;
@@ -20,6 +21,7 @@ namespace Clean.PostMicroService.WebApi
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetPostsQuery).Assembly));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetPostQuery).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetCompletePostQuery).Assembly));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(AddPostCommand).Assembly));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(UpdatePostCommand).Assembly));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(AddUserCommand).Assembly));
@@ -37,6 +39,7 @@ namespace Clean.PostMicroService.WebApi
         {
             services.AddScoped<IGetPostsService, GetPostsService>();
             services.AddScoped<IGetPostService, GetPostService>();
+            services.AddScoped<IGetCompletePostService, GetCompletePostService>();
             services.AddScoped<IAddPostService, AddPostService>();
             services.AddScoped<IUpdatePostService, UpdatePostService>();
             services.AddScoped<IAddUserService, AddUserService>();

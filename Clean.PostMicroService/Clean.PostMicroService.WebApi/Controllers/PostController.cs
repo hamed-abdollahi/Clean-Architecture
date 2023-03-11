@@ -2,6 +2,7 @@ using Clean.PostMicroService.Application.Services.Command.AddPost;
 using Clean.PostMicroService.Application.Services.Command.UpdatePost;
 using Clean.PostMicroService.Application.Services.Query.GetPost;
 using Clean.PostMicroService.Application.Services.Query.GetPosts;
+using Clean.PostMicroService.Application.Services.Query.GetCompletePost;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -39,6 +40,25 @@ namespace Clean.UserMicroService.WebApi.Controllers
 
         [HttpGet("GetPost")]
         public async Task<IActionResult> GetPost([FromQuery] GetPostQuery model, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await _mediator.Send(model, cancellationToken);
+                if (user is null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+        }
+
+        [HttpGet("GetCompletePost")]
+        public async Task<IActionResult> GetCompletePost([FromQuery] GetCompletePostQuery model, CancellationToken cancellationToken)
         {
             try
             {
