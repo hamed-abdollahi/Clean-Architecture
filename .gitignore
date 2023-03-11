@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Clean.PostMicroService/Clean.PostMicroService.WebApi/appsettings.json
+/Clean.PostMicroService/Clean.PostMicroService.WebApi/Program.cs
+/Clean.PostMicroService/Clean.PostMicroService.WebApi/ServiceCollectionExtensions.cs
+/Clean.PostMicroService.Infrustructure/Clean.PostMicroService.Infrustructure.csproj
+/Clean.Shared/Main/MainController.cs
+/Clean.UserMicroService/Clean.UserMicroService.WebApi/appsettings.json
+/Clean.UserMicroService/Clean.UserMicroService.WebApi/Program.cs
