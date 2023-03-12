@@ -1,4 +1,6 @@
 ﻿using Clean.Persistence;
+using Clean.PostMicroService.Application.BackgroundWorker.AddPost;
+using Clean.PostMicroService.Application.BackgroundWorker.AddUser;
 using Clean.PostMicroService.Application.Interfaces;
 using Clean.PostMicroService.Application.Services.Command.AddPost;
 using Clean.PostMicroService.Application.Services.Command.AddUser;
@@ -9,9 +11,11 @@ using Clean.PostMicroService.Application.Services.Query.GetPost;
 using Clean.PostMicroService.Application.Services.Query.GetPosts;
 using Clean.PostMicroService.Application.Services.Query.GetUser;
 using Clean.PostMicroService.WebApi.Models;
+using Clean.Shared.BaseChannel;
+using Clean.UserMicroService.Application.Services.Command.AddUser;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-
+using MongoDB.Driver;
 
 namespace Clean.PostMicroService.WebApi
 {
@@ -45,13 +49,24 @@ namespace Clean.PostMicroService.WebApi
             services.AddScoped<IAddUserService, AddUserService>();
             services.AddScoped<IGetUserService, GetUserService>();
             services.AddScoped<IUpdateUserService, UpdateUserService>();
-            
+            services.AddScoped<GetUserService>();
+            services.AddScoped<AddUserMongoService>();
+            services.AddScoped<GetPostService>();
+            services.AddScoped<AddPostMongoService>();
+
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer("Data Source=.\\SQL2017;Initial Catalog=Clean_PostService;Integrated Security=true;TrustServerCertificate=True");
+                options.UseSqlServer("Data Source=.;Initial Catalog=Clean_PostService;Integrated Security=true;TrustServerCertificate=True");
             });
 
+            var mongoClient = new MongoClient("mongodb://localhost:27017");
+            var mongoDatabase = mongoClient.GetDatabase("postsdatabase");
+            services.AddSingleton(mongoDatabase);
+
+            services.AddSingleton(typeof(ChannelQueue<>));
+            services.AddHostedService<AddUserWorker>();
+            services.AddHostedService<AddPostWorker>();
 
             return services;
         }

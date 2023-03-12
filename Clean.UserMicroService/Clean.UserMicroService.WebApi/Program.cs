@@ -33,7 +33,7 @@ builder.Services.AddScoped<IUpdateUserService, UpdateUserService>();
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer("Data Source=.\\SQL2017;Initial Catalog=Clean_UserService;Integrated Security=true;TrustServerCertificate=True");
+    options.UseSqlServer("Data Source=.;Initial Catalog=Clean_UserService;Integrated Security=true;TrustServerCertificate=True");
 });
 
 //builder.Services.AddMediatR(typeof(GetUsersQuery).Assembly);
