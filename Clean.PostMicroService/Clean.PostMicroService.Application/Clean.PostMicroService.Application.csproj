@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -18,9 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Clean.Shared">
-      <HintPath>..\..\Clean.Shared\bin\Debug\net7.0\Clean.Shared.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

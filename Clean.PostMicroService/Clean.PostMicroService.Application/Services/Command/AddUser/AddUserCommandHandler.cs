@@ -1,6 +1,4 @@
 ﻿using Clean.PostMicroService.Domain.Entities;
-using Clean.Shared.BaseChannel;
-using Clean.Shared.Events;
 using MediatR;
 
 namespace Clean.PostMicroService.Application.Services.Command.AddUser
@@ -22,7 +20,6 @@ namespace Clean.PostMicroService.Application.Services.Command.AddUser
             };
 
             var res = await _addUserService.AddUser(user, cancellationToken);
-            
             return res;
         }
 

@@ -1,21 +1,13 @@
-﻿using Automatonymous;
-using Clean.PostMicroService.Domain.Entities;
+﻿using Clean.PostMicroService.Domain.Entities;
 using Clean.Shared.Main;
-using Clean.UserMicroService.Application.Services.Command.AddUser;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using SharpCompress.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Clean.PostMicroService.Application.Services.Command.AddPost
 {
     public class AddPostMongoService : MainMongoRepository<PostMongo>
     {
-        private readonly AddUserMongoService _addUserMongoService;
         IMongoDatabase _db;
         public AddPostMongoService(IMongoDatabase db) : base(db)
         {
@@ -26,9 +18,6 @@ namespace Clean.PostMicroService.Application.Services.Command.AddPost
         {
             var tableName = typeof(UserMongo).Name;
             var userCollection = _db.GetCollection<UserMongo>(tableName);
-            var builder = Builders<UserMongo>.Filter;
-            var filter = builder.Eq(x => x.UserId, userId);
-
             var update = Builders<UserMongo>.Update
                 .AddToSet(x=>x.Posts, new PostMongo
                 {
@@ -39,9 +28,6 @@ namespace Clean.PostMicroService.Application.Services.Command.AddPost
                 });
 
             var result = await userCollection.UpdateOneAsync(x=>x.UserId == userId, update, cancellationToken: cancellationToken);
-
-            //if (!result.IsAcknowledged)
-                //throw new Exception($"Could not update the entity");
 
         }
 

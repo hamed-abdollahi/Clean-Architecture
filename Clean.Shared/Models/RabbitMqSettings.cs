@@ -1,4 +1,4 @@
-﻿namespace Clean.UserMicroService.WebApi.Models
+﻿namespace Clean.Shared.Models
 {
     public class RabbitMqSettings
     {

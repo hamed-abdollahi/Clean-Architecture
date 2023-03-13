@@ -1,27 +1,28 @@
 ﻿using Clean.Shared.Contracts;
 using Clean.Shared.DTO;
+using Clean.Shared.Models;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+
 
 namespace Clean.Shared.Main
 {
     public abstract class MainController : ControllerBase, IMainController<MainConsumerDTO>
     {
         private readonly IBus _bus;
-        public MainController(IBus bus)
+        private readonly IConfiguration _configuration;
+        public MainController(IBus bus,IConfiguration configuration)
         {
             _bus = bus;
+            _configuration = configuration;
         }
 
         [NonAction]
         public async void Produce(MainConsumerDTO message, string tag)
         {
-            var uri = new Uri("amqps://jjyupbwu:53a5hzVQv055D31FnzW7U-L4DxnKwV5V@goose.rmq2.cloudamqp.com/jjyupbwu/" + tag);
+            var rabbitMqSettings = _configuration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
+            var uri = new Uri(rabbitMqSettings.Uri + tag);
             var _endPoint = await _bus.GetSendEndpoint(uri);
             _endPoint.Send(message);
         }

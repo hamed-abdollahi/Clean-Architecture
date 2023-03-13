@@ -17,7 +17,7 @@ namespace Clean.UserMicroService.WebApi.Controllers
     public class UserController : MainController 
     {
         private readonly IMediator _mediator;
-        public UserController(IMediator mediator, IBus bus):base(bus)
+        public UserController(IMediator mediator, IBus bus, IConfiguration configuration) :base(bus, configuration)
         {
             _mediator = mediator;
         }

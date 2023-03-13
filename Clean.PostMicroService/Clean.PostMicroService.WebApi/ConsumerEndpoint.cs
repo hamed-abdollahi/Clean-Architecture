@@ -13,16 +13,11 @@ using System.Threading;
 public class ConsumerEndpoint : IConsumer<MainConsumerDTO>
 {
     private readonly IAddUserService _addUserService;
-    private readonly IGetUserService _getUserService;
     private readonly IUpdateUserService _updateUserService;
-    private readonly ChannelQueue<UserAdded> _channel;
-    public ConsumerEndpoint(IAddUserService addUserService,
-          IGetUserService getUserService, IUpdateUserService updateUserService,ChannelQueue<UserAdded> channel)
+    public ConsumerEndpoint(IAddUserService addUserService,IUpdateUserService updateUserService)
     {
         _addUserService = addUserService;
-        _getUserService = getUserService;
         _updateUserService = updateUserService;
-        _channel = channel;
     }
     public async Task Consume(ConsumeContext<MainConsumerDTO> context)
     {
@@ -40,7 +35,6 @@ public class ConsumerEndpoint : IConsumer<MainConsumerDTO>
                         Family = addConsumer.Family,
                     };
                     await _addUserService.AddUser(userAddModel);
-                    await _channel.AddToChannelAsync(new UserAdded { UserId = addConsumer.UserId }, default);
                     break;
                 case Operation.Edit:
                     UpdateUserConsumer updateConsumer = (UpdateUserConsumer)message.Data;

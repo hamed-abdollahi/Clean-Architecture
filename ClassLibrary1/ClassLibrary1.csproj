@@ -9,15 +9,12 @@
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Clean.Shared\Clean.Shared.csproj" />
-    <ProjectReference Include="..\Clean.UserMicroService.Domain\Clean.UserMicroService.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-  
+    <ProjectReference Include="..\Clean.PostMicroService\Clean.PostMicroService.Domain\Clean.PostMicroService.Domain.csproj" />
+    <ProjectReference Include="..\Clean.Shared\Clean.Shared.csproj" />
   </ItemGroup>
 
 </Project>

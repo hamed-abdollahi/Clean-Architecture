@@ -1,11 +1,5 @@
 ﻿using Clean.Shared.BaseChannel;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Clean.Shared.Events;
 using Clean.PostMicroService.Application.Services.Query.GetPost;
@@ -30,7 +24,6 @@ namespace Clean.PostMicroService.Application.BackgroundWorker.AddPost
             while (!stoppingToken.IsCancellationRequested)
             {
                 using var scope = _serviceProvider.CreateScope();
-
                 var getUserRepository = scope.ServiceProvider.GetRequiredService<GetUserService>();
                 var getPostRepository = scope.ServiceProvider.GetRequiredService<GetPostService>();
                 var writeRepository = scope.ServiceProvider.GetRequiredService<AddPostMongoService>();
@@ -39,7 +32,6 @@ namespace Clean.PostMicroService.Application.BackgroundWorker.AddPost
                     await foreach (var item in _readModelChannel.ReturnValue(stoppingToken))
                     {
                         var post = await getPostRepository.GetPost(item.PostId, stoppingToken);
-
                         if (post != null)
                         {
                             //await getUserRepository.

@@ -10,8 +10,8 @@ using Clean.PostMicroService.Application.Services.Query.GetCompletePost;
 using Clean.PostMicroService.Application.Services.Query.GetPost;
 using Clean.PostMicroService.Application.Services.Query.GetPosts;
 using Clean.PostMicroService.Application.Services.Query.GetUser;
-using Clean.PostMicroService.WebApi.Models;
 using Clean.Shared.BaseChannel;
+using Clean.Shared.Models;
 using Clean.UserMicroService.Application.Services.Command.AddUser;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +39,12 @@ namespace Clean.PostMicroService.WebApi
             return services;
         }
 
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services,IConfiguration configuration)
         {
+            var dbConnection = configuration.GetConnectionString("DefaultConnection");
+            var mongoDbSettings = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+
+
             services.AddScoped<IGetPostsService, GetPostsService>();
             services.AddScoped<IGetPostService, GetPostService>();
             services.AddScoped<IGetCompletePostService, GetCompletePostService>();
@@ -57,11 +61,11 @@ namespace Clean.PostMicroService.WebApi
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer("Data Source=.;Initial Catalog=Clean_PostService;Integrated Security=true;TrustServerCertificate=True");
+                options.UseSqlServer(dbConnection);
             });
 
-            var mongoClient = new MongoClient("mongodb://localhost:27017");
-            var mongoDatabase = mongoClient.GetDatabase("postsdatabase");
+            var mongoClient = new MongoClient(mongoDbSettings.Uri);
+            var mongoDatabase = mongoClient.GetDatabase(mongoDbSettings.Database);
             services.AddSingleton(mongoDatabase);
 
             services.AddSingleton(typeof(ChannelQueue<>));
@@ -71,8 +75,9 @@ namespace Clean.PostMicroService.WebApi
             return services;
         }
 
-        public static IServiceCollection AddBus(this IServiceCollection services, RabbitMqSettings rabbitMqSettings)
+        public static IServiceCollection AddBus(this IServiceCollection services, IConfiguration configuration)
         {
+            var rabbitMqSettings = configuration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
             services.AddMassTransit(x =>
             {      
                 x.AddConsumer<ConsumerEndpoint>();
